@@ -7,13 +7,9 @@ export class CurrencesService {
 
   getCurrences() {
     return this.httpService
-      .get('http://api.nbp.pl/api/exchangerates/tables/C/?format=json')
-      .pipe(
-        map((res) => {
-          const data = res.data[0].rates;
-          const currences = data.map((item) => item.code);
-          return [...currences, 'PLN'];
-        }),
-      );
+      .get(
+        `https://free.currconv.com/api/v7/currencies?apiKey=${process.env.API_KEY}`,
+      )
+      .pipe(map((res) => res.data));
   }
 }

@@ -1,11 +1,17 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CalcResult } from '../dto/calc/calc-result.dto';
+import { CalcDto } from '../dto/calc/calc-result.dto';
+import { CalcService } from './calc.service';
 
 @Controller('calc')
 export class CalcController {
+  constructor(private calcService: CalcService) {}
   @Post()
-  res(@Body() calcControllerDto: CalcResult) {
-    return calcControllerDto;
+  res(@Body() calcControllerDto: CalcDto) {
+    return this.calcService.getComputedValues(
+      calcControllerDto.firstCurrency,
+      calcControllerDto.secondCurrency,
+      calcControllerDto.amount,
+    );
   }
   @Get()
   index() {
