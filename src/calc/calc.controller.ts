@@ -27,6 +27,5 @@ export class CalcController {
   @Get()
   index() {
     return this.calcService.findAll();
-    // return 'test';
   }
 }

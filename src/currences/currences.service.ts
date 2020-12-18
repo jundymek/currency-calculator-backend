@@ -10,6 +10,15 @@ export class CurrencesService {
       .get(
         `https://free.currconv.com/api/v7/currencies?apiKey=${process.env.API_KEY}`,
       )
-      .pipe(map((res) => res.data));
+      .pipe(
+        map((res) =>
+          Object.keys(res.data.results).map((key) => {
+            const currency = {};
+            currency['symbol'] = key;
+            currency['name'] = res.data.results[key]['currencyName'];
+            return currency;
+          }),
+        ),
+      );
   }
 }

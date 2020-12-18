@@ -33,7 +33,14 @@ export class CalcService {
           data['secondCurrency'] = b;
           data['amount'] = amount;
           data['result'] = data['price'] * amount;
-          data['date'] = new Date();
+          data['date'] = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          });
           return data;
         }),
       )
