@@ -11,4 +11,10 @@ export class Calc {
   secondCurrency: string;
   @Column()
   amount: number;
+  @Column()
+  price: string;
+  @Column()
+  result: string;
+  @Column()
+  date: Date;
 }

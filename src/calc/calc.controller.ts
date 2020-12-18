@@ -9,24 +9,20 @@ export class CalcController {
   constructor(private calcService: CalcService) {}
   @Post()
   async res(@Body() calcControllerDto: CalcDto) {
-    await getConnection()
-      .createQueryBuilder()
-      .insert()
-      .into(Calc)
-      .values([
-        {
-          firstCurrency: calcControllerDto.firstCurrency,
-          secondCurrency: calcControllerDto.secondCurrency,
-          amount: calcControllerDto.amount,
-        },
-      ])
-      .execute();
-
-    return this.calcService.getComputedValues(
+    const returnedData = await this.calcService.getComputedValues(
       calcControllerDto.firstCurrency,
       calcControllerDto.secondCurrency,
       calcControllerDto.amount,
     );
+    console.log(returnedData);
+    await getConnection()
+      .createQueryBuilder()
+      .insert()
+      .into(Calc)
+      .values([returnedData])
+      .execute();
+
+    return returnedData;
   }
   @Get()
   index() {

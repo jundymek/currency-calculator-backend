@@ -16,21 +16,27 @@ export class CalcService {
     return this.calcRepository.find();
   }
 
-  getComputedValues(a, b, amount) {
+  getComputedValues(a: string, b: string, amount: number) {
     console.log(amount);
     if (amount <= 0) {
       throw new Error('Liczba musi być dodatnia');
     }
     return this.httpService
       .get(
-        `https://free.currconv.com/api/v7/convert?q=${a}_${b},${b}_${a}&compact=ultra&apiKey=${process.env.API_KEY}`,
+        `https://free.currconv.com/api/v7/convert?q=${a}_${b}&compact=ultra&apiKey=${process.env.API_KEY}`,
       )
       .pipe(
         map((res) => {
-          const data = res.data;
-          data['result'] = data[`${a}_${b}`] * amount;
+          const data = {};
+          data['price'] = Object.values(res.data)[0];
+          data['firstCurrency'] = a;
+          data['secondCurrency'] = b;
+          data['amount'] = amount;
+          data['result'] = data['price'] * amount;
+          data['date'] = new Date();
           return data;
         }),
-      );
+      )
+      .toPromise();
   }
 }
