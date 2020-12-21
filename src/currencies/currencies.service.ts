@@ -1,6 +1,11 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { map } from 'rxjs/operators';
 
+export interface Currency {
+  symbol: string;
+  name: string;
+}
+
 @Injectable()
 export class currenciesService {
   constructor(private httpService: HttpService) {}
@@ -12,7 +17,9 @@ export class currenciesService {
       )
       .pipe(
         map((res) =>
-          Object.keys(res.data.results).map((key) => {
+          Object.keys(res.data.results).map((key):
+            | Currency
+            | Record<string, never> => {
             const currency = {};
             currency['symbol'] = key;
             currency['name'] = res.data.results[key]['currencyName'];
