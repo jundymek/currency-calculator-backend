@@ -1,5 +1,6 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpException, HttpService, Injectable } from '@nestjs/common';
 import { map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 export interface Currency {
   symbol: string;
@@ -26,6 +27,9 @@ export class currenciesService {
             return currency;
           }),
         ),
+        catchError((e) => {
+          throw new HttpException(e.response.data, e.response.status);
+        }),
       );
   }
 }
